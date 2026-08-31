@@ -1,0 +1,102 @@
+Pizza sale analysis –  all sql queries
+1.	Kpi
+A)Total revenue:
+SELECT SUM(total_price) as Total_Revenue
+   from pizza_sales;
+ 
+   ans- 817860.05083847
+
+B)Average order value:
+      SELECT SUM(total_price) / count(distinct order_id) as avg_order_value	
+      FROM pizza_sales;
+Ans 38.3072623343546
+
+c)Total pizza sold:
+select pizza_size,sum(total_price) as total_sales ,round(sum(total_price) *100 / (select sum(total_price) from pizza_sales),2) as percentage_sales
+from pizza_sales group by pizza_size
+order by percentage_sales desc;
+   ans- 49574
+
+D)total orders:
+     select pizza_size,sum(total_price) as total_sales ,round(sum(total_price) *100 / (select sum(total_price) from pizza_sales),2) as percentage_sales
+from pizza_sales group by pizza_size
+order by percentage_sales desc;
+Ans-21350
+ 
+E)Average pizzas per order:
+
+;
+Ans- 2.32
+2.	Charts
+a)	Daily trend :
+select DATENAME(dw,order_date) as day, count(distinct order_id) as total_orders from pizza_sales
+   group by  DATENAME(dw,order_date);
+
+
+
+Ans-  
+•	Saturday	3158
+•	Wednesday	3024
+•	Monday             2794
+•	Sunday	             2624
+•	Friday	            3538
+•	Thursday	3239
+•	Tuesday	  2973
+
+b)	Monthly trend:
+select DATENAME(MONTH,order_date) as month, count(distinct order_id) as total_orders from pizza_sales
+group by  DATENAME(MONTH,order_date)
+       order by total_orders desc ;
+  ans-
+•	July	1935
+•	May	          1853
+•	January	1845 
+•	August	1841
+•	March	1840
+•	April		1799
+•	November	1792
+•	June		1773
+•	February	1685
+•	December	1680
+•	September	1661
+•	October	1646
+
+C)	Pct category wise:
+select pizza_category,sum(total_price) as total_sales ,round(sum(total_price) *100 / (select sum(total_price) from pizza_sales),2) as percentage_sales
+from pizza_sales group by pizza_category;
+ans
+•	Category   total_sales        percentage_sales
+•	Classic	220053.100021362	          26.91
+•	Chicken	195919.5  		              23.96
+•	Veggie	193690.451004028	          23.68
+•	Supreme	208196.99981308		          25.46
+
+D)percentage of sales by pizza size
+select pizza_size,sum(total_price) as total_sales ,round(sum(total_price) *100 / (select sum(total_price) from pizza_sales),2) as percentage_sales
+from pizza_sales group by pizza_size
+order by percentage_sales desc;
+
+F)top 5 best selling pizza
+SELECT TOP 5 pizza_name ,SUM(total_price) AS TOTAL_REVENUE, SUM(quantity)AS TOTAL_UNITS_SOLD FROM pizza_sales
+GROUP BY pizza_name
+ORDER BY TOTAL_REVENUE DESC;
+ANS = 
+•	PIZZA NAME			   TOTAL_REVENUE   	          TOTAL_UNIT_SOLD
+•	The Thai Chicken Pizza		43434.25		          	2371
+•	The Barbecue Chicken Pizza		42768				        2432
+•	The California Chicken Pizza		41409.5		       	2370
+•	The Classic Deluxe Pizza		38180.5			          2453
+•	The Spicy Italian Pizza			34831.25			        1924
+
+  G) bottom 5 selling pizza
+SELECT TOP 5 pizza_name ,SUM(total_price) AS TOTAL_REVENUE, SUM(quantity)AS TOTAL_UNITS_SOLD FROM pizza_sales
+GROUP BY pizza_name
+ORDER BY TOTAL_REVENUE ;
+   ANS
+•	NAME				TOTAL-REVENUE	                  TOTAL+UNITS_SOLD
+•	The Brie Carre Pizza		11588.4998130798	    	490
+•	The Green Garden Pizza	13955.75			          997
+•	The Spinach Supreme Pizza	15277.75		        	950
+•	The Mediterranean Pizza	15360.5		            	934
+•	The Spinach Pesto Pizza	15596			            	970
+
